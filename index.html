@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Warm Neutrals -->
     <!-- Application Structure Plan: The SPA is designed as a personal event dashboard for the invitee. It uses a clean, two-column layout (stacking on mobile) to present each event in a distinct "card". This structure allows for easy comparison and consumption of key details (what, where, when) for both events without overwhelming the user. A simple visual timeline is included at the top to provide chronological context, which is crucial for planning. This task-oriented design (review & register) is more user-friendly than a linear text document for managing multiple events. -->
-    <!-- Visualization & Content Choices: Event Info -> Goal: Inform/Compare -> Presentation: HTML/CSS Cards -> Interaction: Clickable map links/register buttons -> Justification: Cards are a standard UI pattern for grouping related info. Links provide direct utility. Timeline -> Goal: Organize -> Presentation: HTML/CSS Timeline -> Interaction: Hover to highlight event card -> Justification: Visually represents the event schedule for quick understanding. No complex data visualization is needed, so no chart libraries are used. -->
+    <!-- Visualization & Content Choices: Event Info -> Goal: Inform/Compare -> Presentation: HTML/CSS Cards -> Interaction: Clickable map links/register buttons -> Justification: Cards are a standard UI pattern for grouping related info. Links provides direct utility. Timeline -> Goal: Organize -> Presentation: HTML/CSS Timeline -> Interaction: Hover to highlight event card -> Justification: Visually represents the event schedule for quick understanding. No complex data visualization is needed, so no chart libraries are used. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
@@ -24,6 +24,10 @@
         .event-card {
              transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
+        /* Ensures the content above the time/date section takes equal space, aligning the Time & Date headers */
+        .align-anchor {
+            min-height: 140px; 
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -31,7 +35,7 @@
     <div class="container mx-auto px-4 py-8 md:py-12">
         <header class="text-center mb-10">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Your MuleSoft Week at a Glance</h1>
-            <p class="mt-2 text-lg text-gray-600">Hi Charles, we're thrilled to invite you to two exclusive events in San Francisco.</p>
+            <p class="mt-2 text-lg text-gray-600" id="greeting-message">Hi, we're thrilled to invite you to two exclusive events in San Francisco.</p>
         </header>
 
         <main>
@@ -69,8 +73,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
                 <article id="event1" class="event-card bg-white p-6 rounded-lg shadow-lg border-2 border-transparent flex flex-col">
                     <div class="grow">
-                        <h2 class="text-2xl font-bold mb-4 text-blue-900">MuleSoft Global Customer Welcome Reception</h2>
-                        <p class="mb-6 text-gray-600">Join us for an evening of connection and conversation with fellow IT professionals and our executive hosts in a vibrant and engaging environment.</p>
+                        <div class="align-anchor">
+                            <h2 class="text-2xl font-bold mb-4 text-blue-900">MuleSoft Global Customer Welcome Reception</h2>
+                            <p class="mb-6 text-gray-600">Join us for an evening of connection and conversation with fellow IT professionals and our executive hosts in a vibrant and engaging environment.</p>
+                        </div>
 
                         <div class="space-y-4 mb-6">
                             <div class="flex items-start">
@@ -99,15 +105,17 @@
                         </ul>
                     </div>
 
-                    <a href="#register" class="block w-full text-center bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors shadow-md mt-auto">
+                    <a href="https://mulesoftdreamforcewelcomerecep-937c.splashthat.com/" target="_blank" class="block w-full text-center bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors shadow-md mt-auto">
                         Register for Welcome Reception
                     </a>
                 </article>
 
                 <article id="event2" class="event-card bg-white p-6 rounded-lg shadow-lg border-2 border-transparent flex flex-col">
                     <div class="grow">
-                        <h2 class="text-2xl font-bold mb-4 text-blue-900">MuleSoft Dreamfest<br>Pre-Party</h2>
-                        <p class="mb-6 text-gray-600">Kick off the Dreamfest experience with us! Connect with peers, enjoy fantastic food and drinks, and get ready for an incredible time.</p>
+                        <div class="align-anchor">
+                            <h2 class="text-2xl font-bold mb-4 text-blue-900">MuleSoft Dreamfest Pre-Party</h2>
+                            <p class="mb-6 text-gray-600">Kick off the Dreamfest experience with us! Connect with peers, enjoy fantastic food and drinks, and get ready for an incredible time.</p>
+                        </div>
 
                         <div class="space-y-4 mb-6">
                             <div class="flex items-start">
@@ -136,7 +144,7 @@
                         </ul>
                     </div>
 
-                     <a href="#register" class="block w-full text-center bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors shadow-md mt-auto">
+                     <a href="https://invite.salesforce.com/mulesoftdreamfestpreparty" target="_blank" class="block w-full text-center bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors shadow-md mt-auto">
                         Register for Dreamfest Pre-Party
                     </a>
                 </article>
@@ -173,6 +181,22 @@
                     card.addEventListener('mouseleave', removeHighlight);
                 }
             });
+
+            // --- Dynamic Name Retrieval Logic ---
+            const greetingElement = document.getElementById('greeting-message');
+            
+            // Get the URL search parameters (e.g., from '?name=Alice')
+            const urlParams = new URLSearchParams(window.location.search);
+            const userName = urlParams.get('name');
+
+            if (userName && greetingElement) {
+                // Basic capitalization for a nice presentation
+                const capitalizedName = userName.charAt(0).toUpperCase() + userName.slice(1).toLowerCase();
+                // Set the personalized greeting
+                greetingElement.textContent = `Hi ${capitalizedName}, we're thrilled to invite you to two exclusive events in San Francisco.`;
+            }
+            // If no name is found, the greeting remains the default set in HTML: "Hi, we're thrilled..."
+            // --- End Name Retrieval Logic ---
         });
     </script>
 </body>
